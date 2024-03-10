@@ -1,17 +1,14 @@
 ## Description
 
-The `Calendar` DAX expression generates a calendar table containing monthly dates from January 2022 to February 2024. This calendar table is commonly used as a Date dimension table in Power BI for time-based analysis and reporting.
+The `Calendar` table in this DAX expression is designed for use in Power BI to generate a date table covering the range from January 1, 2022, to December 31, 2024. It also adds additional columns for year, month, month name, year-month, and year-month name for enhanced date analysis.
 
 ### Functionality
 
-- Creates a table with columns: "Date", "Year", "Month", "MonthName", "YearMonth", and "YearMonthName".
-- Populates the "Date" column with monthly dates from January 2022 to February 2024.
-- Extracts year, month, and their respective names from the date.
-- Formats the date as "YYYY-MM" and "MMMM YYYY" for the "YearMonth" and "YearMonthName" columns, respectively.
+1. **DateWithSale**: This additional column checks whether each date in the calendar table corresponds to a date with a sale in the "Fact" table. If a sale occurred on the date, it returns TRUE; otherwise, it returns FALSE.
 
 ### Usage
 
-You can use this calendar table as a Date dimension table in your Power BI model. It facilitates time-based calculations and enables filtering and grouping of data by various time dimensions.
+The `Calendar` table is crucial for time-based analysis and visualization in Power BI reports. The inclusion of the "DateWithSale" column allows for deeper insights into sales patterns and facilitates the creation of dynamic visualizations based on sales data.
 
 ### Example
 
@@ -23,5 +20,6 @@ ADDCOLUMNS (
     "Month", MONTH ( [Date] ),
     "MonthName", FORMAT ( [Date], "MMMM" ),
     "YearMonth", FORMAT ( [Date], "YYYY-MM" ),
-    "YearMonthName", FORMAT ( [Date], "MMMM YYYY" )
+    "YearMonthName", FORMAT ( [Date], "MMMM YYYY" ),
+    "DateWithSale", IF([Date] <= MAX('Fact'[Date]), TRUE(), FALSE())
 )
